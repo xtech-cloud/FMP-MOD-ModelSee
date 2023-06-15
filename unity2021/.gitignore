@@ -1,0 +1,19 @@
+
+/_dist_/
+/_build_/
+/ModelSee/Assets/TextMesh Pro/
+/ModelSee/Assets/TextMesh Pro.meta
+/ModelSee/Assets/Plugins/
+/ModelSee/Assets/Plugins.meta
+/ModelSee/Assets/3rd/
+/ModelSee/Assets/3rd.meta
+/ModelSee/Library/
+/ModelSee/obj/
+/ModelSee/Logs/
+/ModelSee/Temp/
+/ModelSee/UserSettings/
+/ModelSee/*.sln
+/ModelSee/*.csproj
+/ModelSee/.vsconfig
+/ModelSee/.vs/
+/.UNITY_HOME.env
