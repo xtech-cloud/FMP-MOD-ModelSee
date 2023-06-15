@@ -165,7 +165,7 @@ namespace XTC.FMP.MOD.ModelSee.LIB.Unity
 
                 var descriptionText = uiReference_.featureInfo.Find("description").GetComponent<Text>();
                 descriptionText.font = settings_["font.main"].AsObject() as Font;
-                descriptionText.fontSize = style_.featurePanel.featureCard.nameFontSize;
+                descriptionText.fontSize = style_.featurePanel.featureCard.descriptionFontSize;
                 Color descriptionColor;
                 if (!ColorUtility.TryParseHtmlString(style_.featurePanel.featureCard.descriptionFontColor, out descriptionColor))
                     descriptionColor = Color.white;
