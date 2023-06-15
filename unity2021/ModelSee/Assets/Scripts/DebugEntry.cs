@@ -10,7 +10,7 @@ namespace XTC.FMP.MOD.ModelSee.LIB.Unity
     /// <remarks>
     /// 不参与模块编译，仅用于在编辑器中开发调试
     /// </remarks>
-    public class DebugEntry : MyEntry 
+    public class DebugEntry : MyEntry
     {
         /// <summary>
         /// 调试预加载
@@ -66,13 +66,13 @@ namespace XTC.FMP.MOD.ModelSee.LIB.Unity
             data["delay"] = _delay;
             modelDummy_.Publish(MySubjectBase.Open, data);
         }
-        
+
         /// <summary>
         /// 调试显示
         /// </summary>
         /// <param name="_uid">实例的uid</param>
         /// <param name="_delay">延迟时间，单位秒</param>
-        public void __DebugShow(string _uid,  float _delay)
+        public void __DebugShow(string _uid, float _delay)
         {
             var data = new Dictionary<string, object>();
             data["uid"] = _uid;
@@ -85,7 +85,7 @@ namespace XTC.FMP.MOD.ModelSee.LIB.Unity
         /// </summary>
         /// <param name="_uid">实例的uid</param>
         /// <param name="_delay">延迟时间，单位秒</param>
-        public void __DebugHide(string _uid,  float _delay)
+        public void __DebugHide(string _uid, float _delay)
         {
             var data = new Dictionary<string, object>();
             data["uid"] = _uid;
@@ -115,6 +115,25 @@ namespace XTC.FMP.MOD.ModelSee.LIB.Unity
             var data = new Dictionary<string, object>();
             data["uid"] = _uid;
             modelDummy_.Publish(MySubjectBase.Delete, data);
+        }
+
+        public void __DebugInlay(string _uid, string _style, GameObject _uiSlot, GameObject _worldSlot)
+        {
+            var data = new Dictionary<string, object>();
+            data["uid"] = _uid;
+            data["style"] = _style;
+            data["uiSlot"] = _uiSlot;
+            data["worldSlot"] = _worldSlot;
+            modelDummy_.Publish(MySubject.Inlay, data);
+        }
+
+        public void __DebugRefresh(string _uid, string _source, string _uri)
+        {
+            var data = new Dictionary<string, object>();
+            data["uid"] = _uid;
+            data["source"] = _source;
+            data["uri"] = _uri;
+            modelDummy_.Publish(MySubject.Refresh, data);
         }
     }
 }

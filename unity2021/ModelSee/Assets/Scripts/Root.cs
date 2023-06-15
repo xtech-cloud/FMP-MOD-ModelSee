@@ -9,6 +9,9 @@ using UnityEngine;
 /// </remarks>
 public class Root : RootBase
 {
+    public GameObject uiSlot;
+    public GameObject worldSlot;
+
     private void Awake()
     {
         doAwake();
@@ -53,6 +56,16 @@ public class Root : RootBase
         if (GUI.Button(new Rect(0, 150, 60, 30), "Delete"))
         {
             entry_.__DebugDelete("test");
+        }
+
+        if (GUI.Button(new Rect(0, 180, 60, 30), "Inlay"))
+        {
+            entry_.__DebugInlay("test", "default", uiSlot, worldSlot);
+        }
+
+        if (GUI.Button(new Rect(0, 210, 60, 30), "Refresh"))
+        {
+            entry_.__DebugRefresh("test", "assloud://", "XTC.ModelSee/_resources/1.xim_");
         }
     }
 }

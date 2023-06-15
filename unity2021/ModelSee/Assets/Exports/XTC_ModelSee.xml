@@ -37,7 +37,9 @@
 		SideMenu.itemHeight: 边栏菜单中菜单项的高度
 		SideMenu.FocusTab: 焦点菜单项
 		SideMenu.FeatureTab: 特征菜单项 
+		FeaturePanel.FeatureMask.active: 特征遮罩是否启用
 		FeaturePanel.FeatureTab: 特征选项卡
+		FeaturePanel.FeatureCard: 特征说明卡片
     -->
 	<Styles>
 		<Style name="default">
@@ -74,7 +76,7 @@
           Parameter.type: 参数的类型，支持的类型为string,int,float,bool
         -->
 		<Subjects>
-			<Subject message="/XTC/ModelSee/Open">
+			<Subject message="_/XTC/ModelSee/Open">
 				<Parameters>
 					<Parameter key="uid" value="default" type="string"/>
 					<Parameter key="source" value="assloud://" type="string"/>
