@@ -8,6 +8,34 @@ namespace XTC.FMP.MOD.ModelSee.LIB.Unity
     /// </summary>
     public class MyConfig : MyConfigBase
     {
+        public class SwipH
+        {
+            [XmlAttribute("speed")]
+            public float speed { get; set; }
+        }
+
+        public class SwipV
+        {
+            [XmlAttribute("speed")]
+            public float speed { get; set; }
+        }
+
+        public class Pinch
+        {
+            [XmlAttribute("speed")]
+            public float speed { get; set; }
+        }
+
+        public class Gesture
+        {
+            [XmlElement("SwipH")]
+            public SwipH swipH { get; set; }
+            [XmlElement("SwipV")]
+            public SwipV swipV { get; set; }
+            [XmlElement("Pinch")]
+            public Pinch pinch { get; set; }
+        }
+
         public class Debug
         {
             [XmlAttribute("active")]
@@ -45,7 +73,7 @@ namespace XTC.FMP.MOD.ModelSee.LIB.Unity
             [XmlAttribute("itemHeight")]
             public int itemHeight { get; set; }
             [XmlAttribute("itemSpace")]
-            public int itemSpace{ get; set; }
+            public int itemSpace { get; set; }
         }
 
         public class FeaturePanel
@@ -113,6 +141,8 @@ namespace XTC.FMP.MOD.ModelSee.LIB.Unity
             public SideMenu sideMenu { get; set; } = new SideMenu();
             [XmlElement("FeaturePanel")]
             public FeaturePanel featurePanel { get; set; } = new FeaturePanel();
+            [XmlElement("Gesture")]
+            public Gesture gesture{ get; set; } = new Gesture();
         }
 
 

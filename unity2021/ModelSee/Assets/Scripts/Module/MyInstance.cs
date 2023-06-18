@@ -11,6 +11,7 @@ using System.IO;
 using Newtonsoft.Json;
 using UnityEngine.Networking;
 using System.Collections;
+using HedgehogTeam.EasyTouch;
 
 namespace XTC.FMP.MOD.ModelSee.LIB.Unity
 {
@@ -46,6 +47,7 @@ namespace XTC.FMP.MOD.ModelSee.LIB.Unity
         private GameObject agentClone_ = null;
         private Coroutine loadAgentCoroutine_ = null;
         private int gridSpaceCellIndex_ = -1;
+        private bool allowGestureOperation_ = false;
 
         public MyInstance(string _uid, string _style, MyConfig _config, MyCatalog _catalog, LibMVCS.Logger _logger, Dictionary<string, LibMVCS.Any> _settings, MyEntryBase _entry, MonoBehaviour _mono, GameObject _rootAttachments)
             : base(_uid, _style, _config, _catalog, _logger, _settings, _entry, _mono, _rootAttachments)
@@ -172,6 +174,46 @@ namespace XTC.FMP.MOD.ModelSee.LIB.Unity
                 descriptionText.color = descriptionColor;
             }
 
+            // 手势
+            {
+                // 水平滑动
+                var swipeH = uiReference_.renderer.gameObject.AddComponent<QuickSwipe>();
+                swipeH.swipeDirection = QuickSwipe.SwipeDirection.Horizontal;
+                swipeH.enablePickOverUI = true;
+                swipeH.onSwipeAction = new QuickSwipe.OnSwipeAction();
+                swipeH.onSwipeAction.AddListener((_gesture) =>
+                {
+                    if (!allowGestureOperation_)
+                        return;
+                    worldReference_.renderCamera.transform.Translate(Vector3.left * _gesture.swipeVector.x * Time.deltaTime * style_.gesture.swipH.speed, Space.Self);
+                    worldReference_.renderCamera.transform.LookAt(worldReference_.pivot);
+                });
+
+                // 垂直滑动
+                var swipeV = uiReference_.renderer.gameObject.AddComponent<QuickSwipe>();
+                swipeV.swipeDirection = QuickSwipe.SwipeDirection.Vertical;
+                swipeV.onSwipeAction = new QuickSwipe.OnSwipeAction();
+                swipeV.onSwipeAction.AddListener((_gesture) =>
+                {
+                    if (!allowGestureOperation_)
+                        return;
+                    worldReference_.renderCamera.transform.Translate(Vector3.up * _gesture.swipeVector.y * Time.deltaTime * style_.gesture.swipV.speed, Space.Self);
+                    worldReference_.renderCamera.transform.LookAt(worldReference_.pivot);
+                });
+
+                // 捏合
+                var pinch = uiReference_.renderer.gameObject.AddComponent<QuickPinch>();
+                pinch.onPinchAction = new QuickPinch.OnPinchAction();
+                pinch.onPinchAction.AddListener((_gesture) =>
+                {
+                    if (!allowGestureOperation_)
+                        return;
+                    worldReference_.renderCamera.transform.Translate(Vector3.forward * _gesture.deltaPinch * Time.deltaTime * style_.gesture.pinch.speed, Space.Self);
+                    worldReference_.renderCamera.transform.LookAt(worldReference_.pivot);
+                });
+                allowGestureOperation_ = true;
+            }
+
 
             //创建渲染纹理
             int renderTextureWidth = (int)uiReference_.renderer.rectTransform.rect.width;
@@ -204,6 +246,7 @@ namespace XTC.FMP.MOD.ModelSee.LIB.Unity
             // 绑定事件
             uiReference_.menuFocus.onValueChanged.AddListener((_toggled) =>
             {
+                allowGestureOperation_ = _toggled;
                 if (!_toggled)
                     return;
                 applyFocus();

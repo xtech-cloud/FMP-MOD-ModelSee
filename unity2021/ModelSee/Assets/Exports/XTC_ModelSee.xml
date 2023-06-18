@@ -1,20 +1,20 @@
 <?xml version="1.0" encoding="utf-8"?>
 <MyConfig version="1.0">
-	<!-- UI 
+  <!-- UI 
       visible: 预加载完成后是否显示
       slot: ui根节点在主Canvas中的挂载路径
     -->
-	<UI visible="true" slot="[root]"/>
-	<!-- World
+  <UI visible="true" slot="[root]"/>
+  <!-- World
       visible: 预加载完成后是否显示
       slot: world根节点的挂载路径
     -->
-	<World visible="true" slot="[root]"/>
-	<!-- 远程过程调用
+  <World visible="true" slot="[root]"/>
+  <!-- 远程过程调用
       address: 地址
     -->
-	<GRPC address="https://localhost:19000"/>
-	<!-- 样式列表
+  <GRPC address="https://localhost:19000"/>
+  <!-- 样式列表
       name: 名称
       Debug: 调试模式，调试模式下，可以使用以下按键
              - WS键：控制摄像机前后移动
@@ -40,23 +40,31 @@
 		FeaturePanel.FeatureMask.active: 特征遮罩是否启用
 		FeaturePanel.FeatureTab: 特征选项卡
 		FeaturePanel.FeatureCard: 特征说明卡片
+    Gesture.SwipH.speed: 水平方向滑动手势的速度
+    Gesture.SwipV.speed: 垂直方向滑动手势的速度
+    Gesture.Pinch.speed: 捏合手势的速度
     -->
-	<Styles>
-		<Style name="default">
-			<Debug active="false" moveSpeed="1" pivotScale="0.1"/>
-			<GridSpace anchorX="10000" anchorY="10000" anchorZ="10000" cellSize="1000"/>
-			<SideMenu itemWidth="86" itemHeight="32" itemSpace="8">
-				<FocusTab checkedImage="tab_focus_checked.png" uncheckedImage="tab_focus_unchecked.png"/>
-				<FeatureTab checkedImage="tab_feature_checked.png" uncheckedImage="tab_feature_unchecked.png"/>
-			</SideMenu>
-			<FeaturePanel tabSpace="8">
-				<FeatureMask active="true" image="feature_mask.png"/>
-				<FeatureTab checkedImage="feature_checked.png" uncheckedImage="feature_unchecked.png" width="86" height="32" fontSize="14" fontColor="#FFFFFFFF"/>
-				<FeatureCard image="feature_card.png" border="32" width="480" height="120" nameFontSize="16" nameFontColor="#61A4FFFF" descripctionFontSize="14" descriptionFontColor="#FFFFFFFF" />
-			</FeaturePanel>
-		</Style>
-	</Styles>
-	<!-- 预创建的实例列表
+  <Styles>
+    <Style name="default">
+      <Debug active="false" moveSpeed="1" pivotScale="0.1"/>
+      <GridSpace anchorX="10000" anchorY="10000" anchorZ="10000" cellSize="1000"/>
+      <SideMenu itemWidth="86" itemHeight="32" itemSpace="8">
+        <FocusTab checkedImage="tab_focus_checked.png" uncheckedImage="tab_focus_unchecked.png"/>
+        <FeatureTab checkedImage="tab_feature_checked.png" uncheckedImage="tab_feature_unchecked.png"/>
+      </SideMenu>
+      <FeaturePanel tabSpace="8">
+        <FeatureMask active="true" image="feature_mask.png"/>
+        <FeatureTab checkedImage="feature_checked.png" uncheckedImage="feature_unchecked.png" width="86" height="32" fontSize="14" fontColor="#FFFFFFFF"/>
+        <FeatureCard image="feature_card.png" border="32" width="480" height="120" nameFontSize="16" nameFontColor="#61A4FFFF" descripctionFontSize="14" descriptionFontColor="#FFFFFFFF" />
+      </FeaturePanel>
+      <Gesture>
+        <SwipH speed="5"/>
+        <SwipV speed="5"/>
+        <Pinch speed="5"/>
+      </Gesture>
+    </Style>
+  </Styles>
+  <!-- 预创建的实例列表
       uid: 实例的唯一ID
       style: 使用的样式名
       uiRoot: UI挂载的根节点（需可见），空值时等于UI.slot
@@ -64,26 +72,26 @@
       worldRoot: World挂载的根节点（需可见），空值时等于World.slot
       worldSlot: World在worldRoot下的路径
     -->
-	<Instances>
-		<Instance uid="default" style="default" uiRoot="" uiSlot="" worldRoot="" worldSlot=""/>
-	</Instances>
-	<!-- 预加载 -->
-	<Preload>
-		<!-- 消息订阅的主题
+  <Instances>
+    <Instance uid="default" style="default" uiRoot="" uiSlot="" worldRoot="" worldSlot=""/>
+  </Instances>
+  <!-- 预加载 -->
+  <Preload>
+    <!-- 消息订阅的主题
           message: 消息
           Parameter.key: 参数的键
           Parameter.value: 参数的值
           Parameter.type: 参数的类型，支持的类型为string,int,float,bool
         -->
-		<Subjects>
-			<Subject message="_/XTC/ModelSee/Open">
-				<Parameters>
-					<Parameter key="uid" value="default" type="string"/>
-					<Parameter key="source" value="assloud://" type="string"/>
-					<Parameter key="uri" value="XTC.ModelSee/_resources/1.xim_" type="string"/>
-					<Parameter key="delay" value="0" type="float"/>
-				</Parameters>
-			</Subject>
-		</Subjects>
-	</Preload>
+    <Subjects>
+      <Subject message="/XTC/ModelSee/Open">
+        <Parameters>
+          <Parameter key="uid" value="default" type="string"/>
+          <Parameter key="source" value="assloud://" type="string"/>
+          <Parameter key="uri" value="XTC.ModelSee/_resources/1.xim_" type="string"/>
+          <Parameter key="delay" value="0" type="float"/>
+        </Parameters>
+      </Subject>
+    </Subjects>
+  </Preload>
 </MyConfig>
