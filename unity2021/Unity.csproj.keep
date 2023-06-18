@@ -87,6 +87,9 @@
     <Reference Include="UnityEngine.InputLegacyModule">
       <HintPath>{{UNITY_HOME}}\Editor\Data\Managed\UnityEngine\UnityEngine.InputLegacyModule.dll</HintPath>
     </Reference>
+    <Reference Include="EasyTouchPlugin">
+      <HintPath>{{WORK_DIR}}\ModelSee\Assets\3rd\EasyTouchPlugin\EasyTouchPlugin.dll</HintPath>
+    </Reference>
   </ItemGroup>
 
 </Project>
