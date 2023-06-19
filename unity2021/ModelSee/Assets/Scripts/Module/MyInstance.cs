@@ -185,6 +185,10 @@ namespace XTC.FMP.MOD.ModelSee.LIB.Unity
                 {
                     if (!allowGestureOperation_)
                         return;
+                    if (null == _gesture.pickedUIElement)
+                        return;
+                    if (uiReference_.renderer.gameObject !=_gesture.pickedUIElement)
+                        return;
                     worldReference_.renderCamera.transform.Translate(Vector3.left * _gesture.swipeVector.x * Time.deltaTime * style_.gesture.swipH.speed, Space.Self);
                     worldReference_.renderCamera.transform.LookAt(worldReference_.pivot);
                 });
@@ -192,10 +196,15 @@ namespace XTC.FMP.MOD.ModelSee.LIB.Unity
                 // 垂直滑动
                 var swipeV = uiReference_.renderer.gameObject.AddComponent<QuickSwipe>();
                 swipeV.swipeDirection = QuickSwipe.SwipeDirection.Vertical;
+                swipeV.enablePickOverUI = true;
                 swipeV.onSwipeAction = new QuickSwipe.OnSwipeAction();
                 swipeV.onSwipeAction.AddListener((_gesture) =>
                 {
                     if (!allowGestureOperation_)
+                        return;
+                    if (null == _gesture.pickedUIElement)
+                        return;
+                    if (uiReference_.renderer.gameObject !=_gesture.pickedUIElement)
                         return;
                     worldReference_.renderCamera.transform.Translate(Vector3.up * _gesture.swipeVector.y * Time.deltaTime * style_.gesture.swipV.speed, Space.Self);
                     worldReference_.renderCamera.transform.LookAt(worldReference_.pivot);
@@ -204,9 +213,14 @@ namespace XTC.FMP.MOD.ModelSee.LIB.Unity
                 // 捏合
                 var pinch = uiReference_.renderer.gameObject.AddComponent<QuickPinch>();
                 pinch.onPinchAction = new QuickPinch.OnPinchAction();
+                pinch.enablePickOverUI = true;
                 pinch.onPinchAction.AddListener((_gesture) =>
                 {
                     if (!allowGestureOperation_)
+                        return;
+                    if (null == _gesture.pickedUIElement)
+                        return;
+                    if (uiReference_.renderer.gameObject !=_gesture.pickedUIElement)
                         return;
                     worldReference_.renderCamera.transform.Translate(Vector3.forward * _gesture.deltaPinch * Time.deltaTime * style_.gesture.pinch.speed, Space.Self);
                     worldReference_.renderCamera.transform.LookAt(worldReference_.pivot);
