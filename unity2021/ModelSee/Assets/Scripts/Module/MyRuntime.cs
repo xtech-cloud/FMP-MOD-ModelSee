@@ -3,6 +3,7 @@ using System.Collections.Generic;
 using UnityEngine;
 using LibMVCS = XTC.FMP.LIB.MVCS;
 using XTC.FMP.MOD.ModelSee.LIB.MVCS;
+using XTC.FMP.MOD.ModelSee.LIB.Unity.AssetBundleUtility;
 
 namespace XTC.FMP.MOD.ModelSee.LIB.Unity
 {
@@ -18,6 +19,7 @@ namespace XTC.FMP.MOD.ModelSee.LIB.Unity
             : base(_mono, _config, _catalog, _settings, _logger, _entry)
         {
             GridSpace.CreateSingleton();
+            AssetBundleLoader.CreateSingleton(new CacheStrategyLRU(_mono, _logger));
         }
     }
 }

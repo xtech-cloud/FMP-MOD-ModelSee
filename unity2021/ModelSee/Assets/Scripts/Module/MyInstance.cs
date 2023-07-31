@@ -12,6 +12,7 @@ using Newtonsoft.Json;
 using UnityEngine.Networking;
 using System.Collections;
 using HedgehogTeam.EasyTouch;
+using XTC.FMP.MOD.ModelSee.LIB.Unity.AssetBundleUtility;
 
 namespace XTC.FMP.MOD.ModelSee.LIB.Unity
 {
@@ -43,9 +44,7 @@ namespace XTC.FMP.MOD.ModelSee.LIB.Unity
         private WorldReference worldReference_ = new WorldReference();
         private ManifestSchema manifestSchema_ = null;
         private Toggle currentFeature_;
-        private AssetBundle loadedAssetBundle_ = null;
         private GameObject agentClone_ = null;
-        private Coroutine loadAgentCoroutine_ = null;
         private int gridSpaceCellIndex_ = -1;
         private bool allowGestureOperation_ = false;
 
@@ -345,7 +344,11 @@ namespace XTC.FMP.MOD.ModelSee.LIB.Unity
             if (uri.EndsWith("_"))
             {
                 parseManifestFromFile(uri);
-                loadAgentCoroutine_ = mono_.StartCoroutine(loadUABFromFile(uri));
+                string file = string.Format("{0}/{1}.uab", uri, settings_["platform"].AsString());
+                AssetBundleLoader.instance.Load(file, (_assetBundle) =>
+                {
+                    mono_.StartCoroutine(loadAgent(_assetBundle));
+                });
             }
             applyFocus();
             createFeatures();
@@ -353,20 +356,10 @@ namespace XTC.FMP.MOD.ModelSee.LIB.Unity
 
         private void handleClosed()
         {
-            if (null != loadAgentCoroutine_)
-            {
-                mono_.StopCoroutine(loadAgentCoroutine_);
-                loadAgentCoroutine_ = null;
-            }
             if (null != agentClone_)
             {
                 GameObject.Destroy(agentClone_);
                 agentClone_ = null;
-            }
-            if (null != loadedAssetBundle_)
-            {
-                loadedAssetBundle_.Unload(true);
-                loadedAssetBundle_ = null;
             }
         }
 
@@ -452,33 +445,9 @@ namespace XTC.FMP.MOD.ModelSee.LIB.Unity
             uiReference_.featureInfo.Find("description").GetComponent<Text>().text = _feature.description;
         }
 
-        private IEnumerator loadUABFromFile(string _uri)
+        private IEnumerator loadAgent(AssetBundle _assetBundle)
         {
-            string file = string.Format("{0}/{1}.uab", _uri, settings_["platform"].AsString());
-            if (!File.Exists(file))
-            {
-                logger_.Error("{0} not exists", file);
-                yield break;
-            }
-
-            //logger_.Warning("11111111");
-            var bundleLoadRequest = AssetBundle.LoadFromFileAsync(file);
-            //var bundleLoadRequest = UnityWebRequestAssetBundle.GetAssetBundle(file);
-            //logger_.Warning("222222");
-            //yield return bundleLoadRequest.SendWebRequest();
-            yield return bundleLoadRequest;
-            //logger_.Warning("3333333");
-
-            loadedAssetBundle_ = bundleLoadRequest.assetBundle;
-            //loadedAssetBundle_ = DownloadHandlerAssetBundle.GetContent(bundleLoadRequest);
-            //logger_.Warning("4444444");
-            if (null == loadedAssetBundle_)
-            {
-                logger_.Error("load agent failed!");
-                yield break;
-            }
-
-            var assetLoadRequest = loadedAssetBundle_.LoadAssetAsync<GameObject>("agent");
+            var assetLoadRequest = _assetBundle.LoadAssetAsync<GameObject>("agent");
             yield return assetLoadRequest;
 
             GameObject agent = assetLoadRequest.asset as GameObject;
@@ -486,6 +455,5 @@ namespace XTC.FMP.MOD.ModelSee.LIB.Unity
             agentClone_.transform.SetParent(rootWorld.transform);
             agentClone_.transform.localPosition = Vector3.zero;
         }
-
     }
 }
