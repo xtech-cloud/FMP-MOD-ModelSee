@@ -24,6 +24,10 @@ namespace XTC.FMP.MOD.ModelSee.LIB.Unity
         {
             [XmlAttribute("speed")]
             public float speed { get; set; }
+            [XmlAttribute("maxScale")]
+            public float maxScale { get; set; }
+            [XmlAttribute("minScale")]
+            public float minScale { get; set; }
         }
 
         public class Gesture
@@ -142,7 +146,7 @@ namespace XTC.FMP.MOD.ModelSee.LIB.Unity
             [XmlElement("FeaturePanel")]
             public FeaturePanel featurePanel { get; set; } = new FeaturePanel();
             [XmlElement("Gesture")]
-            public Gesture gesture{ get; set; } = new Gesture();
+            public Gesture gesture { get; set; } = new Gesture();
         }
 
 

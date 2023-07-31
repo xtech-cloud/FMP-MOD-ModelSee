@@ -60,7 +60,7 @@
       <Gesture>
         <SwipH speed="5"/>
         <SwipV speed="5"/>
-        <Pinch speed="5"/>
+        <Pinch speed="5" maxScale="5" minScale="0.2"/>
       </Gesture>
     </Style>
   </Styles>

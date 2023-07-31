@@ -187,10 +187,9 @@ namespace XTC.FMP.MOD.ModelSee.LIB.Unity
                         return;
                     if (null == _gesture.pickedUIElement)
                         return;
-                    if (uiReference_.renderer.gameObject !=_gesture.pickedUIElement)
+                    if (uiReference_.renderer.gameObject != _gesture.pickedUIElement)
                         return;
-                    worldReference_.renderCamera.transform.Translate(Vector3.left * _gesture.swipeVector.x * Time.deltaTime * style_.gesture.swipH.speed, Space.Self);
-                    worldReference_.renderCamera.transform.LookAt(worldReference_.pivot);
+                    worldReference_.renderCamera.transform.RotateAround(worldReference_.pivot.transform.position, Vector3.up, _gesture.swipeVector.x * Time.deltaTime * style_.gesture.swipH.speed);
                 });
 
                 // 垂直滑动
@@ -204,10 +203,9 @@ namespace XTC.FMP.MOD.ModelSee.LIB.Unity
                         return;
                     if (null == _gesture.pickedUIElement)
                         return;
-                    if (uiReference_.renderer.gameObject !=_gesture.pickedUIElement)
+                    if (uiReference_.renderer.gameObject != _gesture.pickedUIElement)
                         return;
-                    worldReference_.renderCamera.transform.Translate(Vector3.up * _gesture.swipeVector.y * Time.deltaTime * style_.gesture.swipV.speed, Space.Self);
-                    worldReference_.renderCamera.transform.LookAt(worldReference_.pivot);
+                    worldReference_.renderCamera.transform.RotateAround(worldReference_.pivot.transform.position, worldReference_.renderCamera.transform.right, _gesture.swipeVector.y * Time.deltaTime * style_.gesture.swipH.speed);
                 });
 
                 // 捏合
@@ -220,8 +218,25 @@ namespace XTC.FMP.MOD.ModelSee.LIB.Unity
                         return;
                     if (null == _gesture.pickedUIElement)
                         return;
-                    if (uiReference_.renderer.gameObject !=_gesture.pickedUIElement)
+                    if (uiReference_.renderer.gameObject != _gesture.pickedUIElement)
                         return;
+
+                    // 距离约束
+                    {
+                        var renderCameraFocusPosition = new Vector3(manifestSchema_.focus.renderCamera.position.x,
+                            manifestSchema_.focus.renderCamera.position.y,
+                            manifestSchema_.focus.renderCamera.position.z);
+
+                        var pivotFocusPosition = new Vector3(manifestSchema_.focus.pivot.position.x,
+                            manifestSchema_.focus.pivot.position.y,
+                            manifestSchema_.focus.pivot.position.z);
+
+                        Vector3 renderCamerePosition = worldReference_.renderCamera.transform.localPosition + worldReference_.renderCamera.transform.forward * Time.deltaTime * _gesture.deltaPinch * style_.gesture.pinch.speed;
+                        float scale = Vector3.Distance(renderCameraFocusPosition, pivotFocusPosition) / Vector3.Distance(renderCamerePosition, pivotFocusPosition);
+                        if (scale < style_.gesture.pinch.minScale || scale > style_.gesture.pinch.maxScale)
+                            return;
+                    }
+
                     worldReference_.renderCamera.transform.Translate(Vector3.forward * _gesture.deltaPinch * Time.deltaTime * style_.gesture.pinch.speed, Space.Self);
                     worldReference_.renderCamera.transform.LookAt(worldReference_.pivot);
                 });
