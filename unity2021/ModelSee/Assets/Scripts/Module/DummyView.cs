@@ -45,17 +45,21 @@ namespace XTC.FMP.MOD.ModelSee.LIB.Unity
             {
                 getLogger().Exception(ex);
             }
-            getLogger().Debug("uid is {0}, style is {1}, uiSlot is {2}, worldSlot is {3}", uid, style, uiSlot.ToString(), worldSlot.ToString());
-            runtime.CreateInstanceAsync(uid, style, "", "", "", "", (_instance) =>
-            {
-                _instance.rootUI.transform.SetParent(uiSlot.transform);
-                _instance.rootUI.transform.localPosition = Vector3.zero;
-                _instance.rootUI.transform.localRotation = Quaternion.identity;
-                _instance.rootUI.transform.localScale = Vector3.one;
-                RectTransform rt = _instance.rootUI.GetComponent<RectTransform>();
-                rt.anchoredPosition = Vector2.zero;
-                rt.sizeDelta = Vector2.zero;
 
+            string uiSlotPath = getTransformPath(uiSlot.transform);
+            getLogger().Debug("uid is {0}, style is {1}, uiSlot is {2}, worldSlot is {3}", uid, style, uiSlotPath, worldSlot.ToString());
+            var strs = uiSlotPath.Split('/', StringSplitOptions.RemoveEmptyEntries);
+            var rootStr = "/" + strs[0];
+            var slotStr = "";
+            for (int i = 1; i < strs.Length; ++i)
+            {
+                slotStr += strs[i];
+                slotStr += "/";
+            }
+            slotStr = slotStr.Remove(slotStr.Length - 1, 1);
+
+            runtime.CreateInstanceAsync(uid, style, rootStr, slotStr, "", "", (_instance) =>
+            {
                 //TODO 如果需要使用外部的世界挂载节点，需要处理GridSpace
                 //_instance.rootWorld.transform.SetParent(worldSlot.transform);
                 //_instance.rootWorld.transform.localPosition = Vector3.zero;
@@ -86,6 +90,14 @@ namespace XTC.FMP.MOD.ModelSee.LIB.Unity
             }
 
             runtime.OpenInstanceAsync(uid, source, uri, 0f);
+        }
+
+        private string getTransformPath(Transform _target)
+        {
+            string path = "/" + _target.name;
+            if (null == _target.transform.parent)
+                return path;
+            return getTransformPath(_target.transform.parent) + path;
         }
     }
 }
