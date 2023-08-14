@@ -87,6 +87,7 @@ namespace XTC.FMP.MOD.ModelSee.LIB.Unity
             {
                 zone.cellS.Add(true);
             }
+            zone.cellS[index] = true;
             return index;
         }
 
